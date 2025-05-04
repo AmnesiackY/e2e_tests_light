@@ -28,7 +28,7 @@ public class ProjectPageTests {
         $("#content-desktop #user_email").setValue(userEmail);
         $("#content-desktop #user_password").setValue(userPassword);
         $("#content-desktop #user_remember_me").click();
-        $("#content-desktop [name=\"commit\"]").click();
+        $("#content-desktop [name='commit']").click();
         $(".common-flash-success").shouldBe(visible);
 
         logger.info(() -> "Choose workspace");
