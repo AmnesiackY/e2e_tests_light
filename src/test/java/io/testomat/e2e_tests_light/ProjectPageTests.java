@@ -34,7 +34,7 @@ public class ProjectPageTests extends BaseTest{
 
     @Test()
     @Disabled("Cannot be executed without workspace administrator rights")
-    public void anotherTest() {
+    public void exampleTestWithTotalCases() {
         searchProject(targetProjectName);
 
         SelenideElement targetProject = countOfProjectsShouldBeEqualTo(1).first();
@@ -42,6 +42,19 @@ public class ProjectPageTests extends BaseTest{
         countOfTestCasesShouldBeEqualTo(targetProject, 0);
 
         totalCountOfTestCasesGreaterThan(100);
+    }
+
+    @Test()
+    public void userCantCreateNewProjectIfLimitOfProjectsReached() {
+        var projectTitle = "Test project";
+
+        clickCreateProject();
+
+        enterProjectTitle(projectTitle);
+
+        clickCreateButton();
+
+        checkThatLimitBannerAlertIsVisible();
     }
 
     @Test
@@ -101,6 +114,30 @@ public class ProjectPageTests extends BaseTest{
         logger.info(() -> "Search project ");
         $("#content-desktop #search").setValue(projectName);
     }
+
+    private void clickCreateProject() {
+        logger.info(() -> "Click Create project ");
+        $("#container  [href*='/projects/new']").shouldBe(visible).click();
+        logger.info(() -> "Check that New project page is open");
+        $(".common-page-header-left h2").shouldHave(text("New project"));
+    }
+
+    public void enterProjectTitle(String projectTitle) {
+        logger.info(() -> "Enter project title");
+        $("#project_title").setValue(projectTitle);
+    }
+
+    public void clickCreateButton() {
+        logger.info(() -> "Click Create button");
+        $("#project-create-btn [type='submit']").click();
+    }
+
+    public void checkThatLimitBannerAlertIsVisible() {
+        logger.info(() -> "Limit banner alert is visible");
+        var isDisplayedLimitBanner = $(".auth-main-container .common-flash-alert-right ").shouldBe(visible).isDisplayed();
+        Assertions.assertTrue( isDisplayedLimitBanner);
+    }
+
 
     private void chooseWorkspace(String workspaceName) {
         logger.info(() -> "Choose workspace");
