@@ -5,9 +5,8 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.testomat.e2e_tests_light.utils.StringParsers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 
 
 import static com.codeborne.selenide.Condition.text;
@@ -15,25 +14,15 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
 import static io.testomat.e2e_tests_light.utils.StringParsers.parseIntegerFromString;
 
 public class ProjectPageTests extends BaseTest{
 
-    private static final Logger logger = LoggerFactory.getLogger(ProjectPageTests.class);
-
-    private final String baseUrl = env.get("BASE_URL");
-    private final String userEmail = env.get("USERNAME");
-    private final String userPassword = env.get("PASSWORD");
     private  final String workspaceName = "QA Club Lviv";
     private final String targetProjectName = "Manufacture light";
 
     @Test()
     public void userCanFindAndOpenProjectWithTests() {
-        open(baseUrl);
-
-        loginUser(userEmail, userPassword);
-
         chooseWorkspace(workspaceName);
 
         searchProject(targetProjectName);
@@ -43,12 +32,9 @@ public class ProjectPageTests extends BaseTest{
         waitForProjectPageIsLoaded(targetProjectName);
     }
 
-    @Test
+    @Test()
+    @Disabled("Cannot be executed without workspace administrator rights")
     public void anotherTest() {
-        open(baseUrl);
-
-        loginUser(userEmail, userPassword);
-
         searchProject(targetProjectName);
 
         SelenideElement targetProject = countOfProjectsShouldBeEqualTo(1).first();
@@ -119,16 +105,6 @@ public class ProjectPageTests extends BaseTest{
     private void chooseWorkspace(String workspaceName) {
         logger.info(() -> "Choose workspace");
         $("#content-desktop #company_id").selectOptionContainingText(workspaceName);
-    }
-
-    //TODO Move to BaseTest
-    private void loginUser(String userEmail, String userPassword) {
-        logger.info(() -> "Login user");
-        $("#content-desktop #user_email").setValue(userEmail);
-        $("#content-desktop #user_password").setValue(userPassword);
-        $("#content-desktop #user_remember_me").click();
-        $("#content-desktop [name='commit']").click();
-        $(".common-flash-success").shouldBe(visible);
     }
 
 }
