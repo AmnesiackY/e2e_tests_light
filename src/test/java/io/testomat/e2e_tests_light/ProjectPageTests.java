@@ -1,6 +1,7 @@
 package io.testomat.e2e_tests_light;
 
 import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.testomat.e2e_tests_light.utils.StringParsers;
@@ -16,9 +17,9 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static io.testomat.e2e_tests_light.utils.StringParsers.parseIntegerFromString;
 
-public class ProjectPageTests extends BaseTest{
+public class ProjectPageTests extends BaseTest {
 
-    private  final String workspaceName = "QA Club Lviv";
+    private final String workspaceName = "QA Club Lviv";
     private final String targetProjectName = "Manufacture light";
 
     @Test()
@@ -35,13 +36,16 @@ public class ProjectPageTests extends BaseTest{
     @Test()
     @Disabled("Cannot be executed without workspace administrator rights")
     public void exampleTestWithTotalCases() {
+        var expectedAmountOfProjects = 1;
+        var expectedAmountOfTestCases = 0;
+        var expectedTotalAmountOfTestCases = 100;
         searchProject(targetProjectName);
 
-        SelenideElement targetProject = countOfProjectsShouldBeEqualTo(1).first();
+        SelenideElement targetProject = countOfProjectsShouldBeEqualTo(expectedAmountOfProjects).first();
 
-        countOfTestCasesShouldBeEqualTo(targetProject, 0);
+        countOfTestCasesShouldBeEqualTo(targetProject, expectedAmountOfTestCases);
 
-        totalCountOfTestCasesGreaterThan(100);
+        totalCountOfTestCasesGreaterThan(expectedTotalAmountOfTestCases);
     }
 
     @Test()
@@ -55,6 +59,18 @@ public class ProjectPageTests extends BaseTest{
         clickCreateButton();
 
         checkThatLimitBannerAlertIsVisible();
+    }
+
+    @Test
+    public void userCanCheckHisRoleAndCompany() {
+        var companyName = "QA Club Lviv";
+        var roleName = "QA";
+
+        openCompanies();
+
+        checkThatUserAssignedToCompany(workspaceName);
+
+        checkThatUserAssignedAs(roleName);
     }
 
     @Test
@@ -80,6 +96,37 @@ public class ProjectPageTests extends BaseTest{
 
         Assertions.assertEquals(true, actualBoolean);
     }
+
+    private void checkThatUserAssignedToCompany(String specificCompanyName) {
+        logger.info(() -> String.format("Check that User assigned to %s company", specificCompanyName));
+        var columns = parseCompaniesTable(specificCompanyName);
+
+        var actualValue = columns.get(0).$("a").shouldHave(Condition.exactText(specificCompanyName)).getText();
+
+        Assertions.assertEquals(actualValue, specificCompanyName);
+    }
+
+    private void checkThatUserAssignedAs(String roleName) {
+        logger.info(() -> String.format("Check that User assigned as %s", roleName));
+        var columns = parseCompaniesTable(roleName);
+
+        var actualValue = columns.get(2).$("span").shouldHave(Condition.exactText("QA")).getText();
+
+        Assertions.assertEquals(actualValue, roleName);
+    }
+
+    private ElementsCollection parseCompaniesTable(String specificCompanyName) {
+        SelenideElement specificRow = $$("tbody tr").findBy(Condition.text(specificCompanyName));
+        return specificRow.$$("td");
+    }
+
+    private void openCompanies() {
+        logger.info(() -> "Open Companies page");
+        $("[href='/companies']").shouldHave(text("Companies")).click();
+        logger.info(() -> "Check that Companies page is open");
+        $(".auth-main-container h2").shouldHave(text("Companies"));
+    }
+
 
     private void totalCountOfTestCasesGreaterThan(int expectedTotalCount) {
         String totalProjects = $("#container kbd").getText();
@@ -135,7 +182,7 @@ public class ProjectPageTests extends BaseTest{
     public void checkThatLimitBannerAlertIsVisible() {
         logger.info(() -> "Limit banner alert is visible");
         var isDisplayedLimitBanner = $(".auth-main-container .common-flash-alert-right ").shouldBe(visible).isDisplayed();
-        Assertions.assertTrue( isDisplayedLimitBanner);
+        Assertions.assertTrue(isDisplayedLimitBanner);
     }
 
 
