@@ -144,14 +144,14 @@ public class ProjectPageTests extends BaseTest {
         return $$("grid ul li").filter(visible).shouldHave(CollectionCondition.size(expectedSize));
     }
 
-    //TODO Create loader-await class
+    //TODO Create awaiters for PreloadderSpinner
+
     private void waitForProjectPageIsLoaded(String projectName) {
         logger.info(() -> "Check that project is open");
         $(".first h2").shouldHave(text(projectName));
         $(".first [href*='/readme']").shouldHave(text("Readme"));
     }
 
-    //TODO Navigation classes??
     private void selectProject(String projectName) {
         logger.info(() -> "Select project");
         $(byText(projectName)).click();
