@@ -101,18 +101,14 @@ public class ProjectPageTests extends BaseTest {
         logger.info(() -> String.format("Check that User assigned to %s company", specificCompanyName));
         var columns = parseCompaniesTable(specificCompanyName);
 
-        var actualValue = columns.get(0).$("a").shouldHave(Condition.exactText(specificCompanyName)).getText();
-
-        Assertions.assertEquals(actualValue, specificCompanyName);
+        columns.get(0).$("a").shouldHave(Condition.exactText(specificCompanyName));
     }
 
     private void checkThatUserAssignedAs(String roleName) {
         logger.info(() -> String.format("Check that User assigned as %s", roleName));
         var columns = parseCompaniesTable(roleName);
 
-        var actualValue = columns.get(2).$("span").shouldHave(Condition.exactText("QA")).getText();
-
-        Assertions.assertEquals(actualValue, roleName);
+        columns.get(2).$("span").shouldHave(Condition.exactText("QA"));
     }
 
     private ElementsCollection parseCompaniesTable(String specificCompanyName) {
@@ -181,8 +177,7 @@ public class ProjectPageTests extends BaseTest {
 
     public void checkThatLimitBannerAlertIsVisible() {
         logger.info(() -> "Limit banner alert is visible");
-        var isDisplayedLimitBanner = $(".auth-main-container .common-flash-alert-right ").shouldBe(visible).isDisplayed();
-        Assertions.assertTrue(isDisplayedLimitBanner);
+       $(".auth-main-container .common-flash-alert-right ").shouldBe(visible);
     }
 
 
