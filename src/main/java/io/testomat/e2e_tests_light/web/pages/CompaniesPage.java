@@ -12,8 +12,8 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class CompaniesPage {
 
-    private final SelenideElement companiesHeaderText = $(".auth-main-container h2");
-    private final ElementsCollection companiesTable = $$("tbody tr");
+    private final SelenideElement headerName = $(".auth-main-container h2");
+    private final ElementsCollection infoTable = $$("tbody tr");
 
     public void isLoaded() {
         LoggerUtil.info("Check that Companies page is open");
@@ -21,7 +21,7 @@ public class CompaniesPage {
     }
 
     public ElementsCollection returnRowWithSpecificCompanyName(String specificCompanyName) {
-        return companiesTable.findBy(Condition.text(specificCompanyName)).$$("td");
+        return infoTable.findBy(Condition.text(specificCompanyName)).$$("td");
     }
 
     public void checkThatUserAssignedToCompany(String specificCompanyName) {
