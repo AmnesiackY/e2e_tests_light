@@ -68,7 +68,9 @@ public class ProjectPageTests extends BaseTest {
     public void userCanCheckHisRoleAndCompany() {
         var roleName = "QA";
 
-        companiesPage.clickCompanies();
+        projectsPage.clickCompanies();
+
+        companiesPage.isLoaded();
 
         companiesPage.checkThatUserAssignedToCompany(workspaceName);
 

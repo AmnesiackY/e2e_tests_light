@@ -12,29 +12,27 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class CompaniesPage {
 
-    public void clickCompanies() {
-        LoggerUtil.info("Open Companies page");
-        $("[href='/companies']").shouldHave(text("Companies")).click();
+    private final SelenideElement companiesHeaderText = $(".auth-main-container h2");
+    private final ElementsCollection companiesTable = $$("tbody tr");
+
+    public void isLoaded() {
         LoggerUtil.info("Check that Companies page is open");
         $(".auth-main-container h2").shouldHave(text("Companies"));
     }
 
-    public ElementsCollection parseCompaniesTable(String specificCompanyName) {
-        SelenideElement specificRow = $$("tbody tr").findBy(Condition.text(specificCompanyName));
-        return specificRow.$$("td");
+    public ElementsCollection returnRowWithSpecificCompanyName(String specificCompanyName) {
+        return companiesTable.findBy(Condition.text(specificCompanyName)).$$("td");
     }
 
     public void checkThatUserAssignedToCompany(String specificCompanyName) {
         LoggerUtil.info(String.format("Check that User assigned to %s company", specificCompanyName));
-        var columns = parseCompaniesTable(specificCompanyName);
-
+        var columns = returnRowWithSpecificCompanyName(specificCompanyName);
         columns.get(0).$("a").shouldHave(Condition.exactText(specificCompanyName));
     }
 
     public void checkThatUserAssignedAs(String roleName) {
         LoggerUtil.info(String.format("Check that User assigned as %s", roleName));
-        var columns = parseCompaniesTable(roleName);
-
+        var columns = returnRowWithSpecificCompanyName(roleName);
         columns.get(2).$("span").shouldHave(Condition.exactText("QA"));
     }
 }

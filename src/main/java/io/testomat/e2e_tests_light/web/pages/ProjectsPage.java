@@ -15,8 +15,10 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class ProjectsPage {
 
-    private SelenideElement searchInput = $("#search");
-    private SelenideElement projectsCounter = $("#container kbd");
+    private final SelenideElement searchInput = $("#search");
+    private final SelenideElement projectsCounter = $("#container kbd");
+    private final SelenideElement companiesTab = $("[href='/companies']");
+
 
     public void open() {
         LoggerUtil.info("Open Projects page");
@@ -69,5 +71,10 @@ public class ProjectsPage {
     public void chooseWorkspace(String workspaceName) {
         LoggerUtil.info("Choose workspace");
         $("#content-desktop #company_id").selectOptionContainingText(workspaceName);
+    }
+
+    public void clickCompanies() {
+        LoggerUtil.info("Open Companies page");
+        companiesTab.shouldHave(text("Companies")).click();
     }
 }
