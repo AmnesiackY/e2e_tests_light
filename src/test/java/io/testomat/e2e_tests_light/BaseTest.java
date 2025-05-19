@@ -37,9 +37,4 @@ public class BaseTest {
         projectsPage.open();
         projectsPage.isLoaded();
     }
-
-//    @AfterEach
-//    public void closeTestDriver() {
-//        closeWebDriver();
-//    }
 }

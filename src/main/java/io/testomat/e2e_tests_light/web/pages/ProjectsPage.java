@@ -49,10 +49,6 @@ public class ProjectsPage {
 
     public void countOfTestCasesShouldBeEqualTo(SelenideElement targetProject, int expectedCount) {
         targetProject.shouldHave(text(expectedCount + " tests"));
-
-//        String countOfTests = targetProject.getText();
-//        Integer actualCountOfTests = parseIntegerFromString(countOfTests);
-//        Assertions.assertEquals(expectedCount, actualCountOfTests);
     }
 
     public void totalCountOfProjectsIsVisible() {
