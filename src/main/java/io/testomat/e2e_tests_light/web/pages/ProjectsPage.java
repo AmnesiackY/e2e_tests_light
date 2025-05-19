@@ -15,9 +15,13 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class ProjectsPage {
 
+    private final SelenideElement successBanner = $("#container .common-flash-success");
     private final SelenideElement searchInput = $("#search");
     private final SelenideElement projectsCounter = $("#container kbd");
     private final SelenideElement companiesTab = $("[href='/companies']");
+    private final SelenideElement workspaceDropDown = $("#content-desktop #company_id");
+    private final SelenideElement createButton = $("#container  [href*='/projects/new']");
+    private final ElementsCollection projectsGrid = $$("grid ul li");
 
 
     public void open() {
@@ -41,12 +45,12 @@ public class ProjectsPage {
 
     public void signInSuccess() {
         LoggerUtil.info("Check that Projects page is loaded");
-        $("#container .common-flash-success").shouldBe(visible);
+        successBanner.shouldBe(visible);
     }
 
     public ElementsCollection countOfProjectsShouldBeEqualTo(int expectedSize) {
         LoggerUtil.info("Check that count of projects is equal to " + expectedSize);
-        return $$("grid ul li").filter(visible).shouldHave(CollectionCondition.size(expectedSize));
+        return projectsGrid.filter(visible).shouldHave(CollectionCondition.size(expectedSize));
     }
 
     public void countOfTestCasesShouldBeEqualTo(SelenideElement targetProject, int expectedCount) {
@@ -63,14 +67,12 @@ public class ProjectsPage {
 
     public void clickCreateProject() {
         LoggerUtil.info("Click Create project ");
-        $("#container  [href*='/projects/new']").shouldBe(visible).click();
-        LoggerUtil.info("Check that New project page is open");
-        $(".common-page-header-left h2").shouldHave(text("New project"));
+        createButton.shouldBe(visible).click();
     }
 
     public void chooseWorkspace(String workspaceName) {
         LoggerUtil.info("Choose workspace");
-        $("#content-desktop #company_id").selectOptionContainingText(workspaceName);
+        workspaceDropDown.selectOptionContainingText(workspaceName);
     }
 
     public void clickCompanies() {

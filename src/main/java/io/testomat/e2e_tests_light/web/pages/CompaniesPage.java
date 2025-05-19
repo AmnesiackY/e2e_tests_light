@@ -17,7 +17,7 @@ public class CompaniesPage {
 
     public void isLoaded() {
         LoggerUtil.info("Check that Companies page is open");
-        $(".auth-main-container h2").shouldHave(text("Companies"));
+        headerName.shouldHave(text("Companies"));
     }
 
     public ElementsCollection returnRowWithSpecificCompanyName(String specificCompanyName) {
