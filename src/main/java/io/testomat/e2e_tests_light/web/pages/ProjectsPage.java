@@ -67,7 +67,7 @@ public class ProjectsPage {
 
     public void clickCreateProject() {
         LoggerUtil.info("Click Create project ");
-        createButton.shouldBe(visible).click();
+        createButton.click();
     }
 
     public void chooseWorkspace(String workspaceName) {
