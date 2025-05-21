@@ -26,8 +26,9 @@ tasks.withType(JavaCompile) {
 dependencies {
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
 
-    testImplementation('com.codeborne:selenide:7.6.1')
-    testImplementation('org.slf4j:slf4j-simple:2.0.13')
+    implementation('com.codeborne:selenide:7.6.1')
+    implementation('org.slf4j:slf4j-simple:2.0.13')
+    implementation('org.slf4j:slf4j-api:2.0.13')
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

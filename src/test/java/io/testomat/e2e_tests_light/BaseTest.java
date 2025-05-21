@@ -1,47 +1,40 @@
 package io.testomat.e2e_tests_light;
 
+import com.codeborne.selenide.Configuration;
 import io.github.cdimascio.dotenv.Dotenv;
-import org.junit.jupiter.api.AfterEach;
+import io.testomat.e2e_tests_light.web.pages.ProjectsPage;
+import io.testomat.e2e_tests_light.web.pages.SignInPage;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 
-
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
-
 public class BaseTest {
 
     static Dotenv env = Dotenv.load();
+
+    static {
+        Configuration.baseUrl = env.get("BASE_URL");
+    }
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final String baseUrl = env.get("BASE_URL");
     private static final String userEmail = env.get("USERNAME");
     private static final String userPassword = env.get("PASSWORD");
+    private static final SignInPage signInPage = new SignInPage();
+    private static final ProjectsPage projectsPage = new ProjectsPage();
+
+    @BeforeAll
+    public static void openTestomatAndLogin() {
+        signInPage.open();
+        signInPage.loginUser(userEmail, userPassword);
+        projectsPage.signInSuccess();
+    }
 
     @BeforeEach
-    public void openHomepage() {
-        open(baseUrl);
-        loginUser(userEmail, userPassword);
-    }
-
-    @AfterEach
-    public void closeTestDriver() {
-        closeWebDriver();
-    }
-
-    private void loginUser(String userEmail, String userPassword) {
-        logger.info(() -> "Fill user email");
-        $("#content-desktop #user_email").setValue(userEmail);
-        logger.info(() -> "Fill user password");
-        $("#content-desktop #user_password").setValue(userPassword);
-        logger.info(() -> "Tick Remember me button");
-        $("#content-desktop #user_remember_me").click();
-        logger.info(() -> "Click Commit button");
-        $("#content-desktop [name='commit']").click();
-        $(".common-flash-success").shouldBe(visible);
+    public void openProjectsPage() {
+        projectsPage.open();
+        projectsPage.isLoaded();
     }
 }
