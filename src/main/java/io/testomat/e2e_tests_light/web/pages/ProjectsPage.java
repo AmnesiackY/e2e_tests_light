@@ -29,18 +29,21 @@ public class ProjectsPage {
         Selenide.open("");
     }
 
-    public void isLoaded() {
+    public ProjectsPage isLoaded() {
         searchInput.shouldBe(visible);
+        return this;
     }
 
-    public void searchForProject(String targetProjectName) {
+    public ProjectsPage searchForProject(String targetProjectName) {
         LoggerUtil.info("Search project ");
         searchInput.setValue(targetProjectName);
+        return this;
     }
 
-    public void selectProject(String targetProjectName) {
+    public ProjectsPage selectProject(String targetProjectName) {
         LoggerUtil.info("Select project " + targetProjectName);
         $(byText(targetProjectName)).click();
+        return this;
     }
 
     public void signInSuccess() {
