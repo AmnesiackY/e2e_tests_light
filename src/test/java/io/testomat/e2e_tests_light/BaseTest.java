@@ -2,8 +2,7 @@ package io.testomat.e2e_tests_light;
 
 import com.codeborne.selenide.Configuration;
 import io.github.cdimascio.dotenv.Dotenv;
-import io.testomat.e2e_tests_light.web.pages.ProjectsPage;
-import io.testomat.e2e_tests_light.web.pages.SignInPage;
+import io.testomat.e2e_tests_light.common.Application;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.platform.commons.logging.Logger;
@@ -11,30 +10,31 @@ import org.junit.platform.commons.logging.LoggerFactory;
 
 public class BaseTest {
 
-    static Dotenv env = Dotenv.load();
-
-    static {
-        Configuration.baseUrl = env.get("BASE_URL");
-    }
-
+    protected static Dotenv env = Dotenv.load();
+    protected static final String baseUrl = env.get("BASE_URL");
+    protected static final String username = env.get("USERNAME");
+    protected static final String password = env.get("PASSWORD");
+    protected final String workspaceName = "QA Club Lviv";
+    protected final String targetProjectName = "manufacture light";
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String baseUrl = env.get("BASE_URL");
-    private static final String userEmail = env.get("USERNAME");
-    private static final String userPassword = env.get("PASSWORD");
-    private static final SignInPage signInPage = new SignInPage();
-    private static final ProjectsPage projectsPage = new ProjectsPage();
+    protected static Application app = new Application();
 
     @BeforeAll
     public static void openTestomatAndLogin() {
-        signInPage.open();
-        signInPage.loginUser(userEmail, userPassword);
-        projectsPage.signInSuccess();
+        app.signInPage.open();
+        app.signInPage.loginUser(username, password);
+        app.projectsPage.signInSuccess();
     }
 
     @BeforeEach
     public void openProjectsPage() {
-        projectsPage.open();
-        projectsPage.isLoaded();
+        app.projectsPage.open();
+        app.projectsPage.isLoaded();
+    }
+
+    static {
+        Configuration.baseUrl = baseUrl;
+        Configuration.headless = false;
     }
 }
