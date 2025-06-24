@@ -15,12 +15,13 @@ public class SignInPage {
     private final SelenideElement rememberMeCheckbox = $("#content-desktop #user_remember_me");
     private final SelenideElement signInButton = $("#content-desktop [name='commit']");
 
-    public void open() {
+    public SignInPage open() {
         LoggerUtil.info("Open Sign In page");
         Selenide.open("/users/sign_in");
+        return this;
     }
 
-    public void loginUser(String userEmail, String userPassword) {
+    public SignInPage loginUser(String userEmail, String userPassword) {
         LoggerUtil.info("Fill user email");
         emailInput.setValue(userEmail);
         LoggerUtil.info("Fill user password");
@@ -32,5 +33,6 @@ public class SignInPage {
         LoggerUtil.info("Check that Sign In page is disappeared");
         emailInput.shouldBe(hidden);
         passwordInput.shouldBe(hidden);
+        return this;
     }
 }
