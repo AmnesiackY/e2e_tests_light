@@ -39,6 +39,6 @@ public class BaseTest {
     static {
         Configuration.baseUrl = baseUrl;
         Configuration.headless = true;
-        Configuration.timeout = 3000;
+        Configuration.timeout = Integer.parseInt(env.get("TIMEOUT", "3000"));
     }
 }
